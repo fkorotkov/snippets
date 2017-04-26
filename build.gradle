@@ -1,0 +1,54 @@
+apply plugin: 'com.github.ben-manes.versions'
+
+buildscript {
+  apply from: 'libraries.gradle'
+
+  repositories {
+    jcenter()
+  }
+
+  dependencies {
+    classpath libraries['com.github.ben-manes.versions']
+    classpath libraries['org.jetbrains.kotlin:kotlin-gradle-plugin']
+  }
+}
+
+dependencyUpdates.resolutionStrategy = {
+  componentSelection { rules ->
+    rules.all { ComponentSelection selection ->
+      boolean rejected = ['dev', 'eap'].any { qualifier ->
+        selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+      }
+      if (rejected) {
+        selection.reject('dev version')
+      }
+    }
+  }
+}
+
+subprojects {
+  apply from: "$rootDir/libraries.gradle"
+
+  repositories {
+    mavenLocal()
+    jcenter()
+    mavenCentral()
+    maven { setUrl("https://repo.gradle.org/gradle/repo") }
+  }
+
+  apply plugin: "java"
+  apply plugin: "kotlin"
+
+  dependencies {
+    compile libraries['org.jetbrains.kotlin:kotlin-stdlib']
+  }
+
+  sourceCompatibility = 1.8
+  targetCompatibility = 1.8
+
+  test {
+    testLogging {
+      exceptionFormat = 'full'
+    }
+  }
+}
