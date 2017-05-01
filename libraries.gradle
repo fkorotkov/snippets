@@ -7,5 +7,6 @@ ext.libraries = [
   "org.testcontainers:testcontainers": "org.testcontainers:testcontainers:1.2.1",
   "com.github.ben-manes.versions": "com.github.ben-manes:gradle-versions-plugin:0.14.0",
   "com.google.cloud:google-cloud-datastore": "com.google.cloud:google-cloud-datastore:1.0.0-rc2",
+  "com.google.cloud:google-cloud-pubsub": "com.google.cloud:google-cloud-pubsub:0.13.0-alpha",
   "junit:junit": "junit:junit:4.12",
 ]
