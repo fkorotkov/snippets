@@ -1,0 +1,7 @@
+dependencies {
+    testCompile project(":testcontainers:gcloud:container")
+
+    testCompile libraries['com.google.cloud:google-cloud-datastore']
+    testCompile libraries['junit:junit']
+    testCompile libraries['org.jetbrains.kotlin:kotlin-test-junit']
+}
