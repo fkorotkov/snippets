@@ -31,7 +31,7 @@ class TestPubSub {
    * @see https://github.com/GoogleCloudPlatform/google-cloud-java/issues/1973
    */
   @Test
-  fun testWoraroundForIssue1973() {
+  fun testWorkaroundForIssue1973() {
     pubsubContainer.followOutput { print(it.utf8String) }
 
     val channel = ManagedChannelBuilder.forAddress(
