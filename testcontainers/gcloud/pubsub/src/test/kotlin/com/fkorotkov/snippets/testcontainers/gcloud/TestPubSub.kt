@@ -52,6 +52,19 @@ class TestPubSub {
     val topicAdminClient = TopicAdminClient.create(adminSettings)
 
     assertNotNull(topicAdminClient.createTopic(topic))
+
+    println("Publishing message...")
+
+    val publisher = Publisher.defaultBuilder(topic)
+      .setChannelProvider(FixedChannelProvider.create(channel))
+      .build()
+
+    val pubsubMessage = PubsubMessage.newBuilder().setData(ByteString.copyFromUtf8("Hello!")).build()
+    val messageId = publisher.publish(pubsubMessage).get()
+
+    assertNotNull(messageId)
+
+    println("Message $messageId published!")
   }
 
   @Test
