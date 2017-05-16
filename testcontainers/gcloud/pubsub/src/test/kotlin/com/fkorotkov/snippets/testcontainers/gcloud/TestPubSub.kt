@@ -12,6 +12,7 @@ import org.junit.ClassRule
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.fail
 
 
 class TestPubSub {
@@ -121,9 +122,17 @@ class TestPubSub {
     println("Message $messageId published!")
 
     println("Waiting for subscribers...")
-    PubSubTestingUtil.waitForEmptySubscrivers(subscriptionAdminClient, listOf(subscriber))
+
+    var maxRetryCount = 20
+    while (!messagesFromSubscriber.contains(messageId) && maxRetryCount --> 0) {
+      Thread.sleep(50)
+    }
+
+    if (maxRetryCount == 0) {
+      fail("Subscribers failed to process messages in time!")
+    }
 
     assertEquals(messagesFromSubscriber.size, 1)
-    assertEquals(messagesFromSubscriber[0], "Hello")
+    assertEquals(messagesFromSubscriber[0], "Hello!")
   }
 }
