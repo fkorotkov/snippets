@@ -1,7 +1,8 @@
 dependencies {
-    testCompile project(":testcontainers:gcloud:container")
+    testImplementation project(":testcontainers:gcloud:container")
 
-    testCompile libraries['com.google.cloud:google-cloud']
-    testCompile libraries['junit:junit']
-    testCompile libraries['org.jetbrains.kotlin:kotlin-test-junit']
+    testImplementation libraries['com.google.cloud:google-cloud']
+    testImplementation libraries['junit:junit']
+    testImplementation libraries['org.jetbrains.kotlin:kotlin-test-junit']
+    testImplementation libraries['org.testcontainers:testcontainers']
 }

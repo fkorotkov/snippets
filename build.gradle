@@ -36,11 +36,11 @@ subprojects {
     maven { setUrl("https://repo.gradle.org/gradle/repo") }
   }
 
-  apply plugin: "java"
+  apply plugin: "java-library"
   apply plugin: "kotlin"
 
   dependencies {
-    compile libraries['org.jetbrains.kotlin:kotlin-stdlib']
+    implementation libraries['org.jetbrains.kotlin:kotlin-stdlib']
   }
 
   sourceCompatibility = 1.8
