@@ -1,0 +1,12 @@
+apply plugin: 'application'
+
+mainClassName = 'com.fkorotkov.snippets.gcloud.pubsub.CreateSubscription'
+
+run {
+    args 'my-test-project'
+    environment 'GOOGLE_APPLICATION_CREDENTIALS': "$projectDir/service-account-credentials.json"
+}
+
+dependencies {
+    implementation libraries['com.google.cloud:google-cloud']
+}

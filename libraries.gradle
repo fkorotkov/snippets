@@ -6,6 +6,6 @@ ext.libraries = [
   "org.jetbrains.kotlin:kotlin-test-junit": "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version",
   "org.testcontainers:testcontainers": "org.testcontainers:testcontainers:1.2.1",
   "com.github.ben-manes.versions": "com.github.ben-manes:gradle-versions-plugin:0.14.0",
-  "com.google.cloud:google-cloud": "com.google.cloud:google-cloud:0.18.0-alpha",
+  "com.google.cloud:google-cloud": "com.google.cloud:google-cloud:0.19.0-alpha",
   "junit:junit": "junit:junit:4.12",
 ]
