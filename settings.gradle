@@ -1,4 +1,4 @@
-rootProject.name = 'cirrus-ci'
+rootProject.name = 'snippets'
 
 import static groovy.io.FileType.DIRECTORIES
 
