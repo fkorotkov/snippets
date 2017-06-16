@@ -8,8 +8,11 @@ import com.google.pubsub.v1.PushConfig
 import com.google.pubsub.v1.SubscriptionName
 import com.google.pubsub.v1.TopicName
 import io.grpc.ManagedChannelBuilder
+import org.intellij.lang.annotations.Language
 import org.junit.ClassRule
 import org.junit.Test
+import org.testcontainers.containers.wait.LogMessageWaitStrategy
+import org.testcontainers.containers.wait.Wait
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.fail
@@ -30,6 +33,7 @@ class TestPubSub {
             --project $projectName \
             --host-port=0.0.0.0:$emulatorPort
         """)
+        .waitingFor(LogMessageWaitStrategy().withRegEx("(?s).*started.*$"))
   }
 
   /**

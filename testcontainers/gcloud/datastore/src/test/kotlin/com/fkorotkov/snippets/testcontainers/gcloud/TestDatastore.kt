@@ -5,6 +5,7 @@ import com.google.cloud.datastore.Datastore
 import com.google.cloud.datastore.DatastoreOptions
 import org.junit.ClassRule
 import org.junit.Test
+import org.testcontainers.containers.wait.LogMessageWaitStrategy
 import kotlin.test.assertTrue
 
 
@@ -24,6 +25,7 @@ class TestDatastore {
             --host-port=0.0.0.0:$emulatorPort \
             --consistency=1
         """)
+        .waitingFor(LogMessageWaitStrategy().withRegEx("(?s).*running.*$"))
 
     val datastoreService: Datastore by lazy {
       val containerHost = "${datastoreContainer.containerIpAddress}:${datastoreContainer.getMappedPort(emulatorPort)}"
