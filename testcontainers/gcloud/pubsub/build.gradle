@@ -1,3 +1,5 @@
+apply plugin: 'kotlin'
+
 dependencies {
     testImplementation project(":testcontainers:gcloud:container")
 

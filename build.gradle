@@ -1,19 +1,15 @@
-apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'com.fkorotkov.libraries'
 
 buildscript {
-  apply from: 'libraries.gradle'
-
   repositories {
     jcenter()
   }
-
   dependencies {
-    classpath libraries['com.github.ben-manes.versions']
-    classpath libraries['org.jetbrains.kotlin:kotlin-gradle-plugin']
+    classpath 'com.fkorotkov:gradle-libraries-plugin:0.1'
   }
 }
 
-dependencyUpdates.resolutionStrategy = {
+updateLibraries.resolutionStrategy = {
   componentSelection { rules ->
     rules.all { ComponentSelection selection ->
       boolean rejected = ['dev', 'eap'].any { qualifier ->
@@ -27,7 +23,14 @@ dependencyUpdates.resolutionStrategy = {
 }
 
 subprojects {
-  apply from: "$rootDir/libraries.gradle"
+  buildscript {
+    repositories {
+      jcenter()
+    }
+    dependencies {
+      classpath libraries['org.jetbrains.kotlin:kotlin-gradle-plugin']
+    }
+  }
 
   repositories {
     mavenLocal()
@@ -36,8 +39,8 @@ subprojects {
     maven { setUrl("https://repo.gradle.org/gradle/repo") }
   }
 
-  apply plugin: "java-library"
-  apply plugin: "kotlin"
+  apply plugin: 'com.fkorotkov.libraries'
+  apply plugin: 'java-library'
 
   dependencies {
     implementation libraries['org.jetbrains.kotlin:kotlin-stdlib']
