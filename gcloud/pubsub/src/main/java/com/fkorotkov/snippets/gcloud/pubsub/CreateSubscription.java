@@ -2,9 +2,9 @@ package com.fkorotkov.snippets.gcloud.pubsub;
 
 import com.google.api.gax.grpc.FixedExecutorProvider;
 import com.google.api.gax.grpc.InstantiatingChannelProvider;
-import com.google.cloud.pubsub.spi.v1.SubscriptionAdminClient;
-import com.google.cloud.pubsub.spi.v1.SubscriptionAdminSettings;
-import com.google.cloud.pubsub.spi.v1.TopicAdminSettings;
+import com.google.cloud.pubsub.v1.SubscriptionAdminClient;
+import com.google.cloud.pubsub.v1.SubscriptionAdminSettings;
+import com.google.cloud.pubsub.v1.TopicAdminSettings;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.pubsub.v1.PushConfig;

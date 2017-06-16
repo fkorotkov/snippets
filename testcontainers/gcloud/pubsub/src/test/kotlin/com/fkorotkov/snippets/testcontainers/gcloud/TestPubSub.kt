@@ -1,7 +1,7 @@
 package com.fkorotkov.snippets.testcontainers.gcloud
 
 import com.google.api.gax.grpc.FixedChannelProvider
-import com.google.cloud.pubsub.spi.v1.*
+import com.google.cloud.pubsub.v1.*
 import com.google.protobuf.ByteString
 import com.google.pubsub.v1.PubsubMessage
 import com.google.pubsub.v1.PushConfig
