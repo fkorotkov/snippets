@@ -13,4 +13,5 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 
+install: docker pull google/cloud-sdk:latest
 script: ./gradlew check
