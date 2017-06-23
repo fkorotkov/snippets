@@ -1,0 +1,15 @@
+apply plugin: 'application'
+apply plugin: 'kotlin'
+
+mainClassName = 'com.fkorotkov.github.apps.signing.MainKt'
+
+run {
+    environment 'GITHUB_PRIVATE_KEY_FILE': "$rootDir/private-key.pem"
+}
+
+dependencies {
+    implementation libraries['commons-io:commons-io']
+    implementation libraries['joda-time:joda-time']
+    implementation libraries['org.bouncycastle:bcpkix-jdk15on']
+    implementation libraries['com.auth0:java-jwt']
+}
