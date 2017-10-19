@@ -1,6 +1,7 @@
 package com.fkorotkov.snippets.testcontainers.gcloud
 
 import com.google.api.gax.grpc.FixedChannelProvider
+import com.google.api.gax.grpc.GrpcTransportProvider
 import com.google.cloud.pubsub.v1.*
 import com.google.protobuf.ByteString
 import com.google.pubsub.v1.PubsubMessage
@@ -8,11 +9,9 @@ import com.google.pubsub.v1.PushConfig
 import com.google.pubsub.v1.SubscriptionName
 import com.google.pubsub.v1.TopicName
 import io.grpc.ManagedChannelBuilder
-import org.intellij.lang.annotations.Language
 import org.junit.ClassRule
 import org.junit.Test
 import org.testcontainers.containers.wait.LogMessageWaitStrategy
-import org.testcontainers.containers.wait.Wait
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.fail
@@ -48,10 +47,14 @@ class TestPubSub {
       pubsubContainer.getMappedPort(emulatorPort)
     ).usePlaintext(true).build()
 
+    val transportProvider = GrpcTransportProvider.newBuilder()
+      .setChannelProvider(FixedChannelProvider.create(channel))
+      .build()
+
     val topic = TopicName.create(projectName, "foo")
 
     val adminSettings = TopicAdminSettings.defaultBuilder()
-      .setChannelProvider(FixedChannelProvider.create(channel))
+      .setTransportProvider(transportProvider)
       .build()
 
     val topicAdminClient = TopicAdminClient.create(adminSettings)
@@ -83,10 +86,13 @@ class TestPubSub {
       pubsubContainer.getMappedPort(emulatorPort)
     ).usePlaintext(true).build()
     val channelProvider = FixedChannelProvider.create(channel)
+    val transportProvider = GrpcTransportProvider.newBuilder()
+      .setChannelProvider(FixedChannelProvider.create(channel))
+      .build()
 
     val topicAdminClient = TopicAdminClient.create(
       TopicAdminSettings.defaultBuilder()
-        .setChannelProvider(channelProvider)
+        .setTransportProvider(transportProvider)
         .build()
     )
     val topic = topicAdminClient.createTopic(topicName)
@@ -95,7 +101,7 @@ class TestPubSub {
 
     val subscriptionAdminClient = SubscriptionAdminClient.create(
       SubscriptionAdminSettings.defaultBuilder()
-        .setChannelProvider(channelProvider)
+        .setTransportProvider(transportProvider)
         .build()
     )
 
@@ -128,7 +134,7 @@ class TestPubSub {
     println("Waiting for subscribers...")
 
     var maxRetryCount = 20
-    while (!messagesFromSubscriber.contains(messageId) && maxRetryCount --> 0) {
+    while (!messagesFromSubscriber.contains(messageId) && maxRetryCount-- > 0) {
       Thread.sleep(50)
     }
 

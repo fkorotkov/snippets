@@ -1,6 +1,7 @@
 package com.fkorotkov.snippets.gcloud.pubsub;
 
-import com.google.api.gax.grpc.FixedExecutorProvider;
+import com.google.api.gax.core.FixedExecutorProvider;
+import com.google.api.gax.grpc.GrpcTransportProvider;
 import com.google.api.gax.grpc.InstantiatingChannelProvider;
 import com.google.cloud.pubsub.v1.SubscriptionAdminClient;
 import com.google.cloud.pubsub.v1.SubscriptionAdminSettings;
@@ -24,15 +25,19 @@ public class CreateSubscription {
         System.out.println("Using " + projectName + " as project name!");
 
         InstantiatingChannelProvider channelProvider =
-                TopicAdminSettings.defaultChannelProviderBuilder().build();
+                TopicAdminSettings.defaultGrpcChannelProviderBuilder().build();
 
         ListeningScheduledExecutorService executorService =
                 MoreExecutors.listeningDecorator(Executors.newScheduledThreadPool(8));
-
         FixedExecutorProvider executorProvider = FixedExecutorProvider.create(executorService);
 
-        SubscriptionAdminSettings adminSettings = SubscriptionAdminSettings.defaultBuilder()
+        GrpcTransportProvider transportProvider = GrpcTransportProvider.newBuilder()
                 .setChannelProvider(channelProvider)
+                .build();
+
+
+        SubscriptionAdminSettings adminSettings = SubscriptionAdminSettings.defaultBuilder()
+                .setTransportProvider(transportProvider)
                 .setExecutorProvider(executorProvider)
                 .build();
 

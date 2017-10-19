@@ -9,4 +9,5 @@ run {
 
 dependencies {
     implementation libraries['com.google.cloud:google-cloud']
+    implementation libraries['com.google.api:gax-grpc']
 }
