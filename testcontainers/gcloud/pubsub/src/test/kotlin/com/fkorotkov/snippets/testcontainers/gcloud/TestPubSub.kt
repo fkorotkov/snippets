@@ -1,7 +1,7 @@
 package com.fkorotkov.snippets.testcontainers.gcloud
 
-import com.google.api.gax.grpc.FixedChannelProvider
-import com.google.api.gax.grpc.GrpcTransportProvider
+import com.google.api.gax.grpc.GrpcTransportChannel
+import com.google.api.gax.rpc.FixedTransportChannelProvider
 import com.google.cloud.pubsub.v1.*
 import com.google.protobuf.ByteString
 import com.google.pubsub.v1.PubsubMessage
@@ -22,7 +22,8 @@ class TestPubSub {
     val projectName = "testing"
     val emulatorPort = 8888
 
-    @ClassRule @JvmField
+    @ClassRule
+    @JvmField
     public val pubsubContainer: GoogleCloudContainer =
       GoogleCloudContainer()
         .withExposedPorts(emulatorPort)
@@ -35,46 +36,6 @@ class TestPubSub {
         .waitingFor(LogMessageWaitStrategy().withRegEx("(?s).*started.*$"))
   }
 
-  /**
-   * @see https://github.com/GoogleCloudPlatform/google-cloud-java/issues/1973
-   */
-  @Test
-  fun testWorkaroundForIssue1973() {
-    pubsubContainer.followOutput { print(it.utf8String) }
-
-    val channel = ManagedChannelBuilder.forAddress(
-      pubsubContainer.containerIpAddress,
-      pubsubContainer.getMappedPort(emulatorPort)
-    ).usePlaintext(true).build()
-
-    val transportProvider = GrpcTransportProvider.newBuilder()
-      .setChannelProvider(FixedChannelProvider.create(channel))
-      .build()
-
-    val topic = TopicName.create(projectName, "foo")
-
-    val adminSettings = TopicAdminSettings.defaultBuilder()
-      .setTransportProvider(transportProvider)
-      .build()
-
-    val topicAdminClient = TopicAdminClient.create(adminSettings)
-
-    assertNotNull(topicAdminClient.createTopic(topic))
-
-    println("Publishing message...")
-
-    val publisher = Publisher.defaultBuilder(topic)
-      .setChannelProvider(FixedChannelProvider.create(channel))
-      .build()
-
-    val pubsubMessage = PubsubMessage.newBuilder().setData(ByteString.copyFromUtf8("Hello!")).build()
-    val messageId = publisher.publish(pubsubMessage).get()
-
-    assertNotNull(messageId)
-
-    println("Message $messageId published!")
-  }
-
   @Test
   fun endToEndTest() {
     pubsubContainer.followOutput { print(it.utf8String) }
@@ -85,23 +46,23 @@ class TestPubSub {
       pubsubContainer.containerIpAddress,
       pubsubContainer.getMappedPort(emulatorPort)
     ).usePlaintext(true).build()
-    val channelProvider = FixedChannelProvider.create(channel)
-    val transportProvider = GrpcTransportProvider.newBuilder()
-      .setChannelProvider(FixedChannelProvider.create(channel))
-      .build()
+    val channelProvider = FixedTransportChannelProvider.create(
+      GrpcTransportChannel.create(channel)
+    )
 
     val topicAdminClient = TopicAdminClient.create(
-      TopicAdminSettings.defaultBuilder()
-        .setTransportProvider(transportProvider)
+      TopicAdminSettings.newBuilder()
+        .setTransportChannelProvider(channelProvider)
         .build()
     )
-    val topic = topicAdminClient.createTopic(topicName)
+
+    topicAdminClient.createTopic(topicName)
 
     println("Creating subscriber....")
 
     val subscriptionAdminClient = SubscriptionAdminClient.create(
-      SubscriptionAdminSettings.defaultBuilder()
-        .setTransportProvider(transportProvider)
+      SubscriptionAdminSettings.newBuilder()
+        .setTransportChannelProvider(channelProvider)
         .build()
     )
 

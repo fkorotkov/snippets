@@ -1,8 +1,7 @@
 package com.fkorotkov.snippets.gcloud.pubsub;
 
 import com.google.api.gax.core.FixedExecutorProvider;
-import com.google.api.gax.grpc.GrpcTransportProvider;
-import com.google.api.gax.grpc.InstantiatingChannelProvider;
+import com.google.api.gax.grpc.InstantiatingGrpcChannelProvider;
 import com.google.cloud.pubsub.v1.SubscriptionAdminClient;
 import com.google.cloud.pubsub.v1.SubscriptionAdminSettings;
 import com.google.cloud.pubsub.v1.TopicAdminSettings;
@@ -24,27 +23,22 @@ public class CreateSubscription {
 
         System.out.println("Using " + projectName + " as project name!");
 
-        InstantiatingChannelProvider channelProvider =
-                TopicAdminSettings.defaultGrpcChannelProviderBuilder().build();
+        InstantiatingGrpcChannelProvider channelProvider =
+          TopicAdminSettings.defaultGrpcTransportProviderBuilder().build();
 
         ListeningScheduledExecutorService executorService =
                 MoreExecutors.listeningDecorator(Executors.newScheduledThreadPool(8));
         FixedExecutorProvider executorProvider = FixedExecutorProvider.create(executorService);
 
-        GrpcTransportProvider transportProvider = GrpcTransportProvider.newBuilder()
-                .setChannelProvider(channelProvider)
-                .build();
-
-
-        SubscriptionAdminSettings adminSettings = SubscriptionAdminSettings.defaultBuilder()
-                .setTransportProvider(transportProvider)
+        SubscriptionAdminSettings adminSettings = SubscriptionAdminSettings.newBuilder()
+                .setTransportChannelProvider(channelProvider)
                 .setExecutorProvider(executorProvider)
                 .build();
 
         SubscriptionAdminClient subscriptionAdminClient = SubscriptionAdminClient.create(adminSettings);
 
-        TopicName topic = TopicName.create(projectName, TOPIC);
-        SubscriptionName subscriptionName = SubscriptionName.create(projectName, SUBSCRIPTION_NAME);
+        TopicName topic = TopicName.of(projectName, TOPIC);
+        SubscriptionName subscriptionName = SubscriptionName.of(projectName, SUBSCRIPTION_NAME);
 
         System.out.println("Creating subscription...");
         subscriptionAdminClient.createSubscription(

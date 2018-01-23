@@ -8,12 +8,12 @@
     {
       "group": "com.google.api",
       "name": "gax-grpc",
-      "version": "0.26.0"
+      "version": "1.16.0"
     },
     {
       "group": "com.google.cloud",
       "name": "google-cloud",
-      "version": "0.26.0-alpha"
+      "version": "0.33.0-alpha"
     },
     {
       "group": "com.google.protobuf",
@@ -23,22 +23,22 @@
     {
       "group": "com.google.protobuf",
       "name": "protobuf-java",
-      "version": "3.4.0"
+      "version": "3.5.1"
     },
     {
       "group": "com.google.protobuf",
       "name": "protoc",
-      "version": "3.4.0"
+      "version": "3.5.1-1"
     },
     {
       "group": "commons-io",
       "name": "commons-io",
-      "version": "2.5"
+      "version": "2.6"
     },
     {
       "group": "com.auth0",
       "name": "java-jwt",
-      "version": "3.2.0"
+      "version": "3.3.0"
     },
     {
       "group": "io.grpc",
@@ -48,27 +48,27 @@
     {
       "group": "io.grpc",
       "name": "grpc-netty",
-      "version": "1.7.0"
+      "version": "1.9.0"
     },
     {
       "group": "io.grpc",
       "name": "grpc-protobuf",
-      "version": "1.7.0"
+      "version": "1.9.0"
     },
     {
       "group": "io.grpc",
       "name": "grpc-stub",
-      "version": "1.7.0"
+      "version": "1.9.0"
     },
     {
       "group": "io.grpc",
       "name": "protoc-gen-grpc-java",
-      "version": "1.7.0"
+      "version": "1.9.0"
     },
     {
       "group": "io.netty",
       "name": "netty-tcnative-boringssl-static",
-      "version": "2.0.6.Final"
+      "version": "2.0.7.Final"
     },
     {
       "group": "joda-time",
@@ -83,27 +83,27 @@
     {
       "group": "org.bouncycastle",
       "name": "bcpkix-jdk15on",
-      "version": "1.58"
+      "version": "1.59"
     },
     {
       "group": "org.jetbrains.kotlin",
       "name": "kotlin-gradle-plugin",
-      "version": "1.1.51"
+      "version": "1.2.21"
     },
     {
       "group": "org.jetbrains.kotlin",
       "name": "kotlin-stdlib",
-      "version": "1.2.0-beta-88"
+      "version": "1.2.21"
     },
     {
       "group": "org.jetbrains.kotlin",
       "name": "kotlin-test-junit",
-      "version": "1.2.0-beta-88"
+      "version": "1.2.21"
     },
     {
       "group": "org.testcontainers",
       "name": "testcontainers",
-      "version": "1.4.3"
+      "version": "1.5.1"
     }
   ]
 }
